@@ -1,0 +1,21 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "emin-akcil-claude-mods",
+  "description": "Emin Akcil's Claude Code mods.",
+  "owner": {
+    "name": "Emin Akcil",
+    "url": "https://github.com/eminakcil"
+  },
+  "plugins": [
+    {
+      "name": "session-hud",
+      "source": {
+        "source": "github",
+        "repo": "eminakcil/session-hud"
+      },
+      "description": "Your CLI status line in the desktop app: context, prompt cache hit and time left, response speed, 5-hour and weekly limits with pace, and git. Draws only: no model requests, no file writes; runs read-only git.",
+      "category": "development",
+      "tags": ["mods", "function-hooks", "statusline", "prompt-cache", "usage-limits", "git"]
+    }
+  ]
+}
