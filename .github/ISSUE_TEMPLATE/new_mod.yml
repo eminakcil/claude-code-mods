@@ -1,0 +1,44 @@
+name: 🧩 New mod proposal
+description: Propose a mod for this marketplace
+labels: [new mod]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Mod name
+      description: Lowercase letters, digits and hyphens
+      placeholder: my-mod
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What would it do?
+      description: What it shows or changes in Claude Code, and for whom.
+    validations:
+      required: true
+  - type: dropdown
+    id: shape
+    attributes:
+      label: Shape
+      multiple: true
+      options:
+        - Band above the prompt
+        - Side pane
+        - Status line entry
+        - Tool call row
+        - Slash command
+        - Hook on tool calls or prompts
+        - Other
+  - type: checkboxes
+    id: pr
+    attributes:
+      label: Contributing
+      options:
+        - label: I'd like to build it and open a pull request
+  - type: input
+    id: repo
+    attributes:
+      label: Repository
+      description: The mod's public repository, once it exists
+      placeholder: https://github.com/you/my-mod
