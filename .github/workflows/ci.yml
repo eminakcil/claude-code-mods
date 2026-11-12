@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Pinned: the mod API is early access and may change between releases.
+  CLAUDE_CODE_VERSION: 2.1.322
+  DISABLE_AUTOUPDATER: 1
+
+jobs:
+  marketplace:
+    name: Validate marketplace
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Install Claude Code
+        run: npm install -g "@anthropic-ai/claude-code@${CLAUDE_CODE_VERSION}"
+
+      - name: Validate marketplace.json
+        run: claude plugin validate .
+
+      - name: Check every listed repository exists
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          status=0
+          for repo in $(jq -r '.plugins[].source | objects | select(.source == "github") | .repo' .claude-plugin/marketplace.json); do
+            if gh api "repos/${repo}" --silent; then
+              echo "✔ ${repo}"
+            else
+              echo "::error title=${repo}::Repository not found or not public"
+              status=1
+            fi
+          done
+          exit "$status"
